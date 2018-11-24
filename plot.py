@@ -1,5 +1,6 @@
 import matplotlib.pyplot as pyplot
 import pandas
+from matplotlib.gridspec import GridSpec
 
 
 def data_clean(n_times=10, csv_file=None):
@@ -42,21 +43,25 @@ def plotting(data1, data2):
     pyplot.xlim(0, 11)
 
     # # figure2 holding two axes that plots the two cases with errorbar
-    figure2, f2_axes = pyplot.subplots(2, 1)
+    figure2 = pyplot.figure(2)
+    gs = GridSpec(2, 4, figure=figure2)
+    f2_axe0 = figure2.add_subplot(gs[0, 0:2])
+    f2_axe1 = figure2.add_subplot(gs[1, 0:2])
+    f2_axe2 = figure2.add_subplot(gs[0:, 2:])
 
-    f2_axes[1].plot(X, busy_means, label="busy-waiting", marker='.', linestyle='--', linewidth='1')
-    f2_axes[1].errorbar(X, busy_means, busy_stdev, fmt='none')
+    # busy-waiting means time with errorbar
+    f2_axe0.plot(X, busy_means, label="busy-waiting", marker='.', linestyle='--', linewidth='1')
+    f2_axe0.errorbar(X, busy_means, busy_stdev, fmt='none')
 
-    f2_axes[0].errorbar(X, non_busy_means, non_busy_stdev, fmt='none')
-    f2_axes[0].plot(X, non_busy_means, label="non-busy-waiting", marker='.', linestyle='--', linewidth='1')
+    # non-busy-waiting means time with errorbar
+    f2_axe1.errorbar(X, non_busy_means, non_busy_stdev, fmt='none')
+    f2_axe1.plot(X, non_busy_means, label="non-busy-waiting", marker='.', linestyle='--', linewidth='1')
 
-    # plot decoration
-    # figure2.suptitle("Performance Analysis")
-    # figure2.xlabel("How many times the process C has consumed")
-    # pyplot.ylabel("The accumulative elapsed time (in nanosecond)")
-    # pyplot.legend(loc="upper left")
-    # pyplot.grid()
-    # pyplot.xlim(0, 11)
+    # busy-waiting and non-busy-waiting
+    f2_axe2.plot(X, busy_means, label="busy-waiting", marker='.', linestyle='--', linewidth='1')
+    f2_axe2.errorbar(X, busy_means, busy_stdev, fmt='none')
+    f2_axe2.errorbar(X, non_busy_means, non_busy_stdev, fmt='none')
+    f2_axe2.plot(X, non_busy_means, label="non-busy-waiting", marker='.', linestyle='--', linewidth='1')
 
     # show the plot
     pyplot.show()

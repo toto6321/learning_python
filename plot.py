@@ -1,40 +1,30 @@
 import pandas
-from matplotlib import pyplot
 
 
-def draw_the_plots(n_loop=10):
+def data_clean(n_times=10, csv_file=None):
+    if csv_file is None:
+        return
+
     # read from the csv files
-    df_non_busy_50_origin = pandas.read_csv("statistics_non-busy-waiting_50.csv", names=list(range(1, n_loop + 1, 1)))
-    df_busy_50_origin = pandas.read_csv("statistics_busy-waiting_50.csv", names=list(range(1, n_loop + 1, 1)))
+    df_origin = pandas.read_csv(csv_file, names=list(range(1, n_times + 1, 1)))
 
     # data filtering
-    df_non_busy_50 = df_non_busy_50_origin[(df_non_busy_50_origin > 0).all(1)]
-    df_busy_50 = df_busy_50_origin[(df_busy_50_origin > 0).all(1)]
+    df = df_origin[(df_origin > 0).all(1)]
 
     # generate mean values and standard derivation
-    data1_50 = df_non_busy_50.agg(['mean', 'std'])
-    data2_50 = df_busy_50.agg(['mean', 'std'])
+    data = df.agg(['mean', 'std'])
 
-    # mean values
-    m1_50 = data1_50.iloc[0]
-    m1_50.reindex(["non-busy-waiting"], axis=1)
-    m2_50 = data2_50.iloc[0]
-    m2_50.reindex(["busy-waiting"], axis=1)
-
-    # mean values plots
-    df_mean = pandas.concat([m1_50, m2_50], axis=1, keys=["non-busy-waiting", "busy-waiting"])
-    df_mean.plot()
-
-    # plot decoration
-    pyplot.title("Performance Analysis")
-    pyplot.xlabel("How many times the process C has consumed")
-    pyplot.ylabel("The accumulative elapsed time (in nanosecond)")
-    pyplot.legend(loc="upper left")
-    pyplot.grid()
-    pyplot.xlim(0, 11)
-
-    pyplot.show()
+    return data.T
 
 
 if __name__ == '__main__':
-    draw_the_plots()
+    N_TIMES = 10
+    N_LOOP = 50
+    csv_file_suffix = ".csv"
+    non_busy_waiting_file_prefix = "statistics_non-busy-waiting_"
+    busy_waiting_file_prefix = "statistics_busy-waiting_"
+
+    b_file = busy_waiting_file_prefix + str(N_LOOP) + csv_file_suffix
+    n_b_file = non_busy_waiting_file_prefix + str(N_LOOP) + csv_file_suffix
+    s1 = data_clean(n_times=N_TIMES, csv_file=n_b_file)
+    s2 = data_clean(n_times=N_TIMES, csv_file=n_b_file)

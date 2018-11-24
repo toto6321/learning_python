@@ -26,6 +26,10 @@ def compare_performance(data1, data2):
     # non_busy_stdev = data1['std'].tolist()
     # busy_stdev = data2['std'].tolist()
 
+    print(non_busy_means)
+    print('\n')
+    print(busy_means)
+
     # # figure1
     figure1 = pyplot.figure(1)
     pyplot.plot(X, non_busy_means, label="non-busy-waiting", marker='.', linestyle='--', linewidth='1')

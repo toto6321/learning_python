@@ -6,3 +6,9 @@ venv/
 
 # test data
 *.csv
+
+# statistic file
+*.csv
+
+# exported figure
+*.png

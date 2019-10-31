@@ -1,0 +1,2 @@
+# Question
+Suppose you are given a collection of weak learners where each learner is able to operate with 55% accuracy. You combine seven of these learners with a majority rule for final output. What will be the accuracy of the ensemble? How many learners will be needed if the accuracy desired is at least 90%.
